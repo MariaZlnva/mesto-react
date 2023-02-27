@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PopupWithForm ({title, name, children, titleBtn, isOpen, onClose}) {
+function PopupWithForm ({title, name, titleBtn, isOpen, onClose, children}) {
   
   return (
     <div 
