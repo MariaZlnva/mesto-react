@@ -3,9 +3,10 @@ import plus from '../images/plus.svg'
 import pen from '../images/pen.svg'
 import spinner from '../images/UDui.gif'
 import {api} from '../utils/api'
+import Card from './Card'
 
 
-function Main({onEditProfile, onAddPlace, onEditAvatar}) {
+function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
   
   const [userName, setUserName] = React.useState();
   const [userDescription , setUserDescription ] = React.useState();
@@ -15,7 +16,6 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
   React.useEffect(()=>{
     api.getInfoUserServer()
       .then((dataUser) => {
-        console.log(dataUser)
         setUserName(dataUser.name);
         setUserDescription(dataUser.about);
         setUserAvatar(dataUser.avatar);
@@ -25,13 +25,13 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
   React.useEffect(()=>{
     api.getItemsServer()
       .then((cardsServer) => {
-        console.log(cardsServer)
         setCards(cardsServer)
       })
   }, [])
 
   return (
     <main className="content page__content">
+    
       <section className="profile content__profile">
         <div className="profile__info">
           <div className="profile__btn-avatar" onClick={onEditAvatar}>
@@ -49,29 +49,18 @@ function Main({onEditProfile, onAddPlace, onEditAvatar}) {
           <img src={plus} alt="Добавить" className="profile__add-image" />
         </button>
       </section>
-      <section className="places" aria-label="Публикации">
 
+      <section className="places" aria-label="Публикации">
           {
-            cards.map((card, i) => (
+            cards.map((card, i) => (      
             <article className="card" key = {card._id}>
-              <button aria-label="Удалить" className="card__delete" type="button"></button>
-              <img src={card.link} alt={card.name} className="card__image" />
-              <div className="card__info">
-                <h2 className="card__title">{card.name}</h2>
-                <div>
-                  <button aria-label="Нравится" className="card__like" type="button"></button>
-                  <div className="card__calcul-like"></div>
-                </div> 
-              </div>
+              <Card card = {card} onCardClick = {onCardClick}/>
             </article>
             ))
           }
-
-          
-     
-      
       </section>
     </main>
+    
   );
 }
 

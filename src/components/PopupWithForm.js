@@ -4,12 +4,7 @@ function PopupWithForm ({title, name, children, titleBtn, isOpen, onClose}) {
   
   return (
     <div 
-    // className={`popup popup_${name}`}
-      className = {
-        isOpen 
-        ? (`popup popup_${name} popup_opened`)
-        : (`popup popup_${name}`)
-      }
+    className={`popup popup_${name} ${isOpen ? "popup_opened" : ""}`}
     >
         <div className="popup__content">
           <button aria-label="Закрыть" className="popup__close" type="button" onClick={onClose}></button>
