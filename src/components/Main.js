@@ -1,7 +1,7 @@
 import React from "react";
 import plus from '../images/plus.svg'
 import pen from '../images/pen.svg'
-import spinner from '../images/UDui.gif'
+// import spinner from '../images/UDui.gif'
 import {api} from '../utils/api'
 import Card from './Card'
 
@@ -20,6 +20,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
         setUserDescription(dataUser.about);
         setUserAvatar(dataUser.avatar);
       })
+      .catch((err) => console.log("Error getInfoUserServer!"))
   }, [])
 
   React.useEffect(()=>{
@@ -27,6 +28,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
       .then((cardsServer) => {
         setCards(cardsServer)
       })
+      .catch((err) => console.log("Error getItemsServer!"))
   }, [])
 
   return (
