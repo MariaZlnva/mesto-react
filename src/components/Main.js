@@ -4,48 +4,41 @@ import pen from '../images/pen.svg'
 // import spinner from '../images/UDui.gif'
 import {api} from '../utils/api'
 import Card from './Card'
+import {CurrentUserContext} from '../contexts/CurrentUserContext'
 
 
-function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
+function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike }) {
+  //подписываемся на контекст
+  const currentUser = React.useContext(CurrentUserContext);
   
-  const [userName, setUserName] = React.useState();
-  const [userDescription , setUserDescription ] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
-  const [cards, setCards] = React.useState([]);
+  // const [cards, setCards] = React.useState([]);
 
-  React.useEffect(()=>{
-    api.getInfoUserServer()
-      .then((dataUser) => {
-        setUserName(dataUser.name);
-        setUserDescription(dataUser.about);
-        setUserAvatar(dataUser.avatar);
-      })
-      .catch((err) => console.log("Error getInfoUserServer!"))
-  }, [])
 
-  React.useEffect(()=>{
-    api.getItemsServer()
-      .then((cardsServer) => {
-        setCards(cardsServer)
-      })
-      .catch((err) => console.log("Error getItemsServer!"))
-  }, [])
+  // React.useEffect(()=>{
+  //   api.getItemsServer()
+  //     .then((cardsServer) => {
+  //       setCards(cardsServer)
+  //       // console.log(cards)
+  //     })
+  //     .catch((err) => console.log("Error getItemsServer!"))
+  // }, [])
 
   return (
+
     <main className="content page__content">
     
       <section className="profile content__profile">
         <div className="profile__info">
           <div className="profile__btn-avatar" onClick={onEditAvatar}>
-            <img src={userAvatar} alt="Аватарка" className="profile__avatar" />
+            <img src={currentUser.avatar} alt="Аватарка" className="profile__avatar" />
           </div>
           <div className="profile__title-box">
-            <h1 className="profile__title">{userName}</h1>
+            <h1 className="profile__title">{currentUser.name}</h1>
             <button className="profile__edit" type="button" onClick={onEditProfile}>
               <img src={pen} alt="Редактировать" />
             </button>
           </div>
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
         <button className="profile__add" type="button" onClick={onAddPlace}>
           <img src={plus} alt="Добавить" className="profile__add-image" />
@@ -56,7 +49,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
           {
             cards.map((card, i) => (      
             <article className="card" key = {card._id}>
-              <Card card = {card} onCardClick = {onCardClick}/>
+              <Card card = {card} onCardClick = {onCardClick} onCardLike={onCardLike} />
             </article>
             ))
           }
