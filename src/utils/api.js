@@ -44,8 +44,8 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: dataInput.nameUser,
-        about: dataInput.aboutUser
+        name: dataInput.name,
+        about: dataInput.about
       })
     })
     .then(this._checkResponse)
@@ -55,7 +55,7 @@ class Api {
     return fetch ((`${this._baseUrl}${this._idGroup}/users/me/avatar`), {
     method: 'PATCH',
     body: JSON.stringify({
-      avatar: dataForm.avatarUrl,      
+      avatar: dataForm.avatar,      
     }),
     headers: this._headers
     })

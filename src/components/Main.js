@@ -10,18 +10,6 @@ import {CurrentUserContext} from '../contexts/CurrentUserContext'
 function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }) {
   //подписываемся на контекст
   const currentUser = React.useContext(CurrentUserContext);
-  
-  // const [cards, setCards] = React.useState([]);
-
-
-  // React.useEffect(()=>{
-  //   api.getItemsServer()
-  //     .then((cardsServer) => {
-  //       setCards(cardsServer)
-  //       // console.log(cards)
-  //     })
-  //     .catch((err) => console.log("Error getItemsServer!"))
-  // }, [])
 
   return (
 

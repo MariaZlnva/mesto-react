@@ -6,6 +6,8 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const body = document.getElementsByTagName("body")[0];
@@ -28,6 +30,25 @@ function App() {
       })
       .catch((err) => console.log("Error getInitialData!"));
   }, []);
+
+
+  function handleUpdateUser (dataInput) {
+    api.changeProfileData(dataInput)
+    .then((res) => {
+      console.log(res) //{name: about: avatar: _id}
+      setCurrentUser(res)
+      closeAllPopups()
+    })
+  }
+
+  function handleUpdateAvatar (dataAvatar) {
+    api.changeAvatar(dataAvatar)
+    .then((res) => {
+      console.log(res)
+      setCurrentUser(res)
+      closeAllPopups()
+    })
+  }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -94,42 +115,7 @@ function App() {
           onCardDelete = {handleCardDelete}
         />
         <Footer />
-
-        <PopupWithForm
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          title="Редактировать профиль"
-          name="edit-profile"
-          titleBtn="Сохранить"
-        >
-          <input
-            id="nameUser"
-            className="popup__input popup__input_name"
-            type="text"
-            name="nameUser"
-            value=""
-            placeholder="Имя"
-            minLength="2"
-            maxLength="40"
-            required
-            onChange={handleInputClick}
-          />
-          <span id="nameUser-error" className="error"></span>
-          <input
-            id="aboutUser"
-            className="popup__input popup__input_info"
-            type="text"
-            name="aboutUser"
-            value=""
-            placeholder="О себе"
-            minLength="2"
-            maxLength="200"
-            required
-            onChange={handleInputClick}
-          />
-          <span id="aboutUser-error" className="error"></span>
-        </PopupWithForm>
-
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser ={handleUpdateUser} />
         <PopupWithForm
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
@@ -163,25 +149,7 @@ function App() {
           <span id="urlCard-error" className="error"></span>
         </PopupWithForm>
 
-        <PopupWithForm
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          title="Обновить аватар"
-          name="update-avatar"
-          titleBtn="Сохранить"
-        >
-          <input
-            id="urlAvatar"
-            className="popup__input popup__input_link"
-            placeholder="Ссылка"
-            type="url"
-            name="avatarUrl"
-            value=""
-            required
-            onChange={handleInputClick}
-          />
-          <span id="urlAvatar-error" className="error"></span>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar = {handleUpdateAvatar}/>
 
         <PopupWithForm title="Вы уверены?" name="delete-card" titleBtn="Да" />
 
