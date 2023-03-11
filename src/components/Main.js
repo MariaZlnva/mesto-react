@@ -7,7 +7,7 @@ import Card from './Card'
 import {CurrentUserContext} from '../contexts/CurrentUserContext'
 
 
-function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike }) {
+function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }) {
   //подписываемся на контекст
   const currentUser = React.useContext(CurrentUserContext);
   
@@ -49,7 +49,7 @@ function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCa
           {
             cards.map((card, i) => (      
             <article className="card" key = {card._id}>
-              <Card card = {card} onCardClick = {onCardClick} onCardLike={onCardLike} />
+              <Card card = {card} onCardClick = {onCardClick} onCardLike={onCardLike} onCardDelete= {onCardDelete}/>
             </article>
             ))
           }

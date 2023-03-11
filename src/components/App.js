@@ -68,6 +68,18 @@ function App() {
       .catch((err) => console.log("Error button-like processing!!!"));
   }
 
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+    .then((res) => {
+      console.log(res)
+      setCards( 
+        cards.filter((item) => item._id !== card._id)
+        
+      )
+      console.log(cards)
+    })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div>
@@ -79,6 +91,7 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
+          onCardDelete = {handleCardDelete}
         />
         <Footer />
 
