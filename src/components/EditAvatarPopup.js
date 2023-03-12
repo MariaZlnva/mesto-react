@@ -16,6 +16,7 @@ function EditAvatarPopup ({isOpen, onClose, onUpdateAvatar}) {
     onUpdateAvatar({
       avatar: avatarUrlRef.current.value /* Значение инпута, полученное с помощью рефа */
     });
+    setAvatarUrl("")
   }
 
 

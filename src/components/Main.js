@@ -2,12 +2,12 @@ import React from "react";
 import plus from '../images/plus.svg'
 import pen from '../images/pen.svg'
 // import spinner from '../images/UDui.gif'
-import {api} from '../utils/api'
+
 import Card from './Card'
 import {CurrentUserContext} from '../contexts/CurrentUserContext'
 
 
-function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }) {
+function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete, isLoading }) {
   //подписываемся на контекст
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -32,7 +32,7 @@ function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCa
           <img src={plus} alt="Добавить" className="profile__add-image" />
         </button>
       </section>
-
+      
       <section className="places" aria-label="Публикации">
           {
             cards.map((card, i) => (      
@@ -42,6 +42,7 @@ function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCa
             ))
           }
       </section>
+    
     </main>
     
   );
