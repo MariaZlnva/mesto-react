@@ -1,4 +1,5 @@
 import React from "react";
+import {useEffect, useState} from 'react';
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
@@ -14,15 +15,17 @@ function App() {
   const body = document.getElementsByTagName("body")[0];
   body.classList = "page";
 
-  const [currentUser, setCurrentUser] = React.useState("");
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [cards, setCards] = React.useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [cards, setCards] = useState([]);
   //переменные состояния, отвечающие за видимость трёх попапов:
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getInitialData()
       .then(([dataUser, cardsServer]) => {
@@ -32,32 +35,36 @@ function App() {
       .catch((err) => console.log("Error getInitialData!"));
   }, []);
 
-
-  function handleUpdateUser (dataInput) {
-    api.changeProfileData(dataInput)
-    .then((res) => {
-      console.log(res)
-      setCurrentUser(res)
-      closeAllPopups()
-    })
+  function handleUpdateUser(dataInput) {
+    api
+      .changeProfileData(dataInput)
+      .then((res) => {
+        console.log(res);
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => console.log("Error user data updates!"));
   }
 
-  function handleUpdateAvatar (dataAvatar) {
-    api.changeAvatar(dataAvatar)
-    .then((res) => {
-      console.log(res)
-      setCurrentUser(res)
-      closeAllPopups()
-    })
+  function handleUpdateAvatar(dataAvatar) {
+    api
+      .changeAvatar(dataAvatar)
+      .then((res) => {
+        console.log(res);
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => console.log("Error avatar data updates!"));
   }
 
-
-  function handleAddPlaceSubmit(dataCard) {  
-    api.addNewCard(dataCard)
-    .then((newCard) => {
-      closeAllPopups();
-      setCards([newCard, ...cards])    
-    })
+  function handleAddPlaceSubmit(dataCard) {
+    api
+      .addNewCard(dataCard)
+      .then((newCard) => {
+        closeAllPopups();
+        setCards([newCard, ...cards]);
+      })
+      .catch((err) => console.log("Error add card!"));
   }
 
   function handleEditProfileClick() {
@@ -74,7 +81,6 @@ function App() {
     setSelectedCard(card);
   }
 
-
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -82,25 +88,25 @@ function App() {
     setSelectedCard(null);
   }
 
-
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     (isLiked ? api.deleteLike(card._id) : api.addLike(card._id))
       .then((updateDataCard) => {
-        setCards(
-          (state) => state.map((c) => (c._id === card._id ? updateDataCard : c))
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? updateDataCard : c))
         );
       })
       .catch((err) => console.log("Error button-like processing!!!"));
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id)
-    .then((res) => {
-      setCards( 
-        cards.filter((item) => item._id !== card._id)
-      )})
+    api
+      .deleteCard(card._id)
+      .then((res) => {
+        setCards((cards) => cards.filter((item) => item._id !== card._id));
+      })
+      .catch((err) => console.log("Error delete card!!!"));
   }
 
   return (
@@ -114,13 +120,24 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete = {handleCardDelete}
-
+          onCardDelete={handleCardDelete}
         />
         <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser ={handleUpdateUser} />
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace = {handleAddPlaceSubmit}/>
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar = {handleUpdateAvatar}/>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <PopupWithForm title="Вы уверены?" name="delete-card" titleBtn="Да" />
 
