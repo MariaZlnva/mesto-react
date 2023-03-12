@@ -30,5 +30,5 @@
  
  **GitHub Pages**
 
-* [Ссылка на GitHub Pages]()
+* [Ссылка на GitHub Pages](https://mariazlnva.github.io/mesto-react/)
 
